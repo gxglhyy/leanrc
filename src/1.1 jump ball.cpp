@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <conio.h>
 #include <Windows.h>
 
 void drawBall(int x, int y)
@@ -15,30 +16,47 @@ void drawBall(int x, int y)
     printf("o");
 }
 
+void updateBall(int& x, int& y, int& dx, int& dy) {
+    x = x + dx;
+    y = y + dy;
+    if (x > 25  || x < 0) {
+        dx = -dx;
+    }
+    if (y > 80 || y < 0) {
+        dy = -dy;
+    }
+}
+
+void updateSleepTime(int& sleepTime) {
+    if (kbhit()) {
+        // ref: https://stackoverflow.com/questions/24708700/c-detect-when-user-presses-arrow-key
+        switch(getch()) { // the real value 
+            case 72:
+                // code for arrow up
+                sleepTime = sleepTime > 10 ? sleepTime - 10 : sleepTime; 
+                break; 
+            case 80:
+                // code for arrow down 
+                sleepTime = sleepTime < 200 ? sleepTime + 10 : sleepTime;
+                break; 
+            } 
+    }
+}
+
 int main()
 {
     int x = 20;
     int y = 10;
-    int vx = 3;
-    int vy = 1;
+    int dx = 2;
+    int dy = 3;
+    int sleepTime = 50;
     while (1)
     {
         system("cls");
+        printf("Sleep %d ms.\r", sleepTime);
         drawBall(x, y);
-        //printf("%d %d \n", x, y);
-        x = x + vx;
-        y = y + vy;
-        if (x > 25  || x < 0) {
-            vx = -vx;
-        }
-        if (y > 80 || y < 0) {
-            vy = -vy;
-        }
-        //getchar();
-        Sleep(50);
-    }
-    
-    drawBall(x, y);
-    system("pause");
-    
+        updateBall(x, y, dx, dy);
+        updateSleepTime(sleepTime);
+        Sleep(sleepTime);
+    }    
 }
