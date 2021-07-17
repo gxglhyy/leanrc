@@ -38,6 +38,7 @@ void drawSimpleAirCraft(int x, int y) { // 函数定义
     printf("* *\n");
 }
 void updatePos(int& x, int& y) {
+    const int speed_y = 2;
     if (kbhit()) {
         // ref: https://stackoverflow.com/questions/24708700/c-detect-when-user-presses-arrow-key
         switch(getch()) {   // switch 语句；字符编码
@@ -50,10 +51,10 @@ void updatePos(int& x, int& y) {
                 x = x + 1 <= MAX_X ? x + 1 : x;
                 break;
             case 75:    // code for arrow left
-                y - 1 >= MIN_Y ? y-- : 0;
+                y = y - speed_y >= MIN_Y ? y - speed_y : y;
                 break;
             case 77:    // code for arrow right
-                y + 1 <= MAX_Y ? y++ : 0;
+                y = y + speed_y <= MAX_Y ? y + speed_y : y;
                 break;
             } 
     }
